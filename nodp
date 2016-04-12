@@ -1,0 +1,6 @@
+#!/bin/sh
+set -eu
+
+/usr/bin/xrandr --output DP1 --off
+/usr/bin/xrandr --output LVDS1 --mode 1600x900
+/usr/bin/nitrogen --restore

@@ -1,0 +1,14 @@
+#!/bin/sh
+set -eu
+
+MUSIC_DIR="${HOME}/Music"
+
+mpc clear > /dev/null
+printf "mpc clear: success.\n"
+mpc update > /dev/null
+printf "mpc update: success.\n"
+
+for i in $(find ${MUSIC_DIR} -name "*.cue")
+do
+    mpc load "${i##${MUSIC_DIR}/}"
+done

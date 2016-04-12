@@ -1,0 +1,17 @@
+#!/bin/sh
+set -u
+
+MPD_LOG_FILE="${HOME}/.mpd/log"
+MPD_ART_FILE="/tmp/mpdart.png"
+MPD_ART_SIZE="172x172"
+BASE_DIR="${HOME}/Music/"
+
+echo | while inotifywait -e modify ${MPD_LOG_FILE}
+do
+    FILE=$(/usr/bin/mpc -f "%file%" | head -n 1)
+    FILE=$(/bin/readlink -f "${BASE_DIR}/${FILE}")
+    BASE_FILE=$(/usr/bin/basename ${FILE})
+    DIR=${FILE%/"${BASE_FILE}"}
+    COVER_FILE=$(find ${DIR} -name "*.jpg" -o -name "*.png" -o -name "*.gif" | head -n 1)
+    /usr/bin/convert ${COVER_FILE} -geometry ${MPD_ART_SIZE} ${MPD_ART_FILE}
+done &

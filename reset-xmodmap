@@ -1,0 +1,4 @@
+#!/bin/sh
+set -eu
+xmodmap -e 'keycode 37 = Control_L NoSymbol Control_L'
+xmodmap -e 'keycode 66 = Caps_Lock NoSymbol Caps_Lock'

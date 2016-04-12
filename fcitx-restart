@@ -1,0 +1,5 @@
+#!/bin/bash
+set -eu
+kill $(pidof fcitx)
+sleep 1
+/usr/bin/fcitx -d

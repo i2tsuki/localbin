@@ -1,0 +1,24 @@
+#!/bin/sh
+set -eu
+
+usage()
+{
+    echo "Usage:"
+}
+
+while getopts :rlh: OPT
+do
+    case $OPT in
+        l) RANDROPTION="--left-of";
+            ;;
+        r) RANDROPTION="--right-of";
+            ;;
+        h) usage
+            ;;
+        *) usage
+            ;;
+    esac
+done
+
+/usr/bin/xrandr --output HDMI1 --mode 1920x1200 ${RANDROPTION} LVDS1
+/usr/bin/nitrogen --restore

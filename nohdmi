@@ -1,0 +1,11 @@
+#!/bin/sh
+set -eu
+
+xrandr --output HDMI1 --off
+xrandr --output LVDS1 --mode 1600x900
+nitrogen --restore
+
+for i in $(pgrep xmobar)
+do
+    grep -e 'x[0-9]' /proc/$i/cmdline && kill -15 $i
+done

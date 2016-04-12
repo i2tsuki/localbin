@@ -1,0 +1,8 @@
+#!/bin/sh
+set -eu
+
+/usr/bin/killall xmobar
+/usr/bin/killall trayer-srg
+/usr/bin/xmonad --restart &
+trayer-srg.custom & 
+/usr/bin/nitrogen --restore

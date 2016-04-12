@@ -1,0 +1,14 @@
+#!/bin/sh
+errorexit()
+{
+    [ -z "$1" ] || { echo -e "\x1b[31m$0: error: $1\x1b[39m" >&2; exit 1; }
+}
+
+info()
+{
+    [ -z "$1" ] || echo -e "\x1b[32m$0:  info: $1\x1b[39m" >&2
+}
+
+CMD="pactl unload-module module-raop-sink"
+info "${CMD}"
+${CMD}

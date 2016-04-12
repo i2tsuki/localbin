@@ -1,0 +1,27 @@
+#!/bin/sh
+set -eu
+
+FILE=${1}
+
+BASE="${FILE%.*}"
+EXT="${FILE##*.}"
+
+MIME="$(/usr/bin/mimetype -bi ${FILE})"
+
+if [ "${MIME}" = "audio/x-ape" ] ; then
+    /usr/bin/mac "${BASE}.${EXT}" "${BASE}.wav" -d
+    /usr/bin/mac "${BASE}.${EXT}" "${BASE}.wav" -v && /bin/rm -fv "${BASE}.${EXT}"
+elif [ ${MIME} = "audio/flac" ] ; then
+    /usr/bin/flac -dV "${BASE}.${EXT}" -o "${BASE}.wav" && /bin/rm -fv "${BASE}.${EXT}"
+elif [ ${MIME} = "audio/x-tta" ] ; then
+    /usr/bin/ttaenc -d "${BASE}.${EXT}" -o "${BASE}.wav"
+fi
+
+/usr/bin/flac -6 -V "${BASE}.wav"
+/usr/bin/nkf -w --in-place "${BASE}.cue"
+pygrace.py "${BASE}.cue" -o file.cue
+
+/bin/mv -v file.cue "${BASE}.cue"
+/bin/rm -fv "${BASE}.${EXT}" "${BASE}.wav"
+
+/bin/echo "${0} Done."

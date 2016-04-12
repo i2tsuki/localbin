@@ -1,0 +1,4 @@
+#!/bin/sh
+set -eu
+
+/usr/bin/synclient TouchpadOff=0
