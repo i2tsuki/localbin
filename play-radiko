@@ -1,0 +1,149 @@
+#!/bin/sh
+set -eu
+
+LANG="ja_JP.utf8"
+
+CONFIG_DIR="${HOME}/.play-radiko"
+
+PLAYER_URL="http://radiko.jp/player/swf/player_3.0.0.01.swf"
+PLAYER_FILE="${CONFIG_DIR}/player.swf"
+KEY_FILE="${CONFIG_DIR}/authkey.png"
+COOKIE_FILE="${CONFIG_DIR}/cookie.txt"
+
+mkdir -pv ${CONFIG_DIR}
+
+usage()
+{
+    echo "usage:"
+    echo "  $0 [channel name] [duration(minuites)]"
+    echo ""
+    echo "options:"
+    echo "  --help, -h                                   Show help"
+    echo "  --channel, -c                                Channel id"
+    echo "  --id, -i                                     Radiko account id"
+    echo "  --password, -p                               Radiko account password"
+    echo ""
+    echo "Channel id example:"
+    echo "  TBS:           TBS Radio" 
+    echo "  ALPHA-STATION: Kyoto FM Alpha-Station"
+    exit 0
+}
+
+error_exit()
+{
+    echo "${1}" >&2
+    exit 1
+}
+
+flag_parse()
+{
+    for i in $*
+    do
+	case $i in
+	    --channel|-c)
+		CHANNEL="1"
+		;;
+	    --id|-i)
+		ID="1"
+		;;
+	    --password|-p)
+		PASS="1"
+		;;
+	    --help|-h)
+		usage
+		;;
+	    *)
+		[ "${CHANNEL}" = "1" ] && CHANNEL=$i && continue
+		[ "${ID}" = "1" ] && ID=$i && continue
+		[ "${PASS}" = "1" ] && PASS=$i && continue
+		usage
+		;;
+	esac
+	shift
+    done
+}
+
+[ $# = "0" ] && usage
+flag_parse $*
+
+# Radiko premium
+[ -f ${COOKIE_FILE} ] && rm -fv ${COOKIE_FILE}
+if [ -n "${ID}" ]; then
+    curl -c ${COOKIE_FILE} \
+	 -d "mail=${ID}&pass=${PASS}" \
+	 https://radiko.jp/ap/member/login/login
+    [ ! -f ${COOKIE_FILE} ] && error_exit "$0: failed: login"
+fi
+
+# Download radiko player
+if [ ! -f ${PLAYER_FILE} ]; then
+    curl -s -o ${PLAYER_FILE} ${PLAYER_URL}
+    [ $? -ne 0 ] && error_exit "$0: failed: download radiko player"
+fi
+
+# Extract keydata (require swftool)
+
+if [ ! -f $KEY_FILE ]; then
+    swfextract -b 14 ${PLAYER_FILE} -o ${KEY_FILE}
+    [ ! -f ${KEY_FILE} ] && error_exit "$0: failed: extract keydata"
+fi
+
+# Access auth1_fms
+curl -s \
+     -b "${COOKIE_FILE}" \
+     -H "pragma: no-cache" \
+     -H "X-Radiko-App: pc_1" \
+     -H "X-Radiko-App-Version: 2.0.1" \
+     -H "X-Radiko-User: test-stream" \
+     -H "X-Radiko-Device: pc" \
+     -d '\r\n' \
+     --dump-header ${CONFIG_DIR}/auth1_fms-header \
+     -o ${CONFIG_DIR}/auth1_fms} \
+     https://radiko.jp/v2/api/auth1_fms
+
+[ $? -ne 0 ] && error_exit "$0: failed: access auth1_fms"
+
+AUTHTOKEN="$(grep 'X-Radiko-AuthToken' ${CONFIG_DIR}/auth1_fms-header | tr -d ' ' | tr -d '\r' | cut -d ':' -f 2)"
+OFFSET="$(grep 'X-Radiko-KeyOffset' ${CONFIG_DIR}/auth1_fms-header | tr -d ' ' | tr -d '\r' | cut -d ':' -f 2)"
+LENGTH="$(grep 'X-Radiko-KeyLength' ${CONFIG_DIR}/auth1_fms-header | tr -d ' ' | tr -d '\r' | cut -d ':' -f 2)"
+
+PARTIAL_KEY="$(dd if=${KEY_FILE} bs=1 skip=${OFFSET} count=${LENGTH} 2> /dev/null | base64)"
+
+rm -f auth1_fms-header ${CONFIG_DIR}/auth1_fms
+
+# Access auth2_fms
+curl -s \
+     -b ${COOKIE_FILE} \
+     -H "pragma: no-cache" \
+     -H "X-Radiko-App: pc_1" \
+     -H" X-Radiko-App-Version: 2.0.1" \
+     -H "X-Radiko-User: test-stream" \
+     -H "X-Radiko-Device: pc" \
+     -H "X-Radiko-Authtoken: ${AUTHTOKEN}" \
+     -H "X-Radiko-Partialkey: ${PARTIAL_KEY}" \
+     -d '\r\n' \
+     -o ${CONFIG_DIR}/auth2_fms \
+     https://radiko.jp/v2/api/auth2_fms
+
+[ $? -ne 0 ] && error_exit "$0: failed: access auth2_fms"
+
+AREAID="$(cut -d ',' -f 1 ${CONFIG_DIR}/auth2_fms)"
+
+rm -f ${CONFIG_DIR}/auth2_fms
+
+# Get stream url
+curl -s "http://radiko.jp/v2/station/stream/${CHANNEL}.xml" -o ${CONFIG_DIR}/${CHANNEL}.xml
+STREAM_URL="$(echo 'cat /url/item[1]/text()' | xmllint --shell ${CONFIG_DIR}/${CHANNEL}.xml | tail -2 | head -1)"
+URL="$(echo ${STREAM_URL} | grep -e 'rtmpe://[^/]*')"
+APP="$(echo ${STREAM_URL#*://} | cut -d '/' -f 2)/$(echo ${STREAM_URL#*://} | cut -d '/' -f 3)"
+PLAYPATH="$(echo ${STREAM_URL#*://} | cut -d '/' -f 4)"
+
+rm -f ${CONFIG_DIR}/${CHANNEL}.xml
+
+rtmpdump \
+         -r ${URL} \
+         --app ${APP} \
+         --playpath ${PLAYPATH} \
+         -W ${PLAYER_URL} \
+         -C S:"" -C S:"" -C S:"" -C S:${AUTHTOKEN} \
+         --live | mplayer -
