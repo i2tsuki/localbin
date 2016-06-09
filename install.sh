@@ -1,7 +1,7 @@
 #!/bin/sh
 set -eu
 
-EXCLUDE=".git|.gitignore|Makefile|LICENSE"
+EXCLUDE="\.git|\.gitignore|Makefile|LICENSE"
 
 mkdir -p ${HOME}/.local/bin
 
