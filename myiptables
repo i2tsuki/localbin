@@ -56,6 +56,8 @@ iptables -A OUTPUT -p tcp --dport 8008 -j ACCEPT
 iptables -A OUTPUT -p tcp --dport 8080 -j ACCEPT
 # radiko
 iptables -A OUTPUT -p tcp --dport 1935 -j ACCEPT 
+# airtame
+iptables -A OUTPUT -p tcp --dport 35482 -j ACCEPT
 
 # FTP (passive)
 iptables -A OUTPUT -p tcp --dport 1024: -m state --state ESTABLISHED,RELATED -j ACCEPT
