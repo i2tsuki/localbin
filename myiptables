@@ -81,5 +81,5 @@ iptables -A OUTPUT -d 10.3.0.0/16 -j ACCEPT
 # modprobe ip_conntrack_ftp 
 
 # save
-iptables -L -n -v
+iptables -L -nv
 /etc/init.d/iptables save
