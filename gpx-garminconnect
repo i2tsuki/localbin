@@ -1,0 +1,32 @@
+#!/bin/sh
+
+# This script convert .gpx file that strava exported to the format that garmin connect can import.
+
+set -eu
+
+REVERSE=""
+FILE=""
+
+flag_parse()
+{
+    for i in $*
+    do
+	case $i in
+	    -r|--reverse)
+		REVERSE=",reverse"
+		;;
+	    *)
+		FILE+="$i"
+		;;
+	esac
+	shift
+    done
+}
+
+# main
+flag_parse $*
+[ -z "${FILE}" ] && exit 1
+
+/usr/bin/gpsbabel -t -D 1 -i 'gpx,gpxver=1.1,garminextensions=1' -f ${FILE} -x track,faketime=20991230235959+5${REVERSE} -o 'gpx,gpxver=1.1,garminextensions=1' -F ${FILE}.tmp.gpx
+sed -i -e '/<link href="http:\/\/www.strava.com\/routes\/.*" \/><type>.*<\/type>/d' ${FILE}.tmp.gpx
+
