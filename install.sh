@@ -1,6 +1,8 @@
 #!/bin/sh
 set -eu
 
+cd "$(dirname $(readlink -f $0))"
+
 EXCLUDE="\.git|\.gitignore|Makefile|LICENSE"
 
 mkdir -p ${HOME}/.local/bin
@@ -11,6 +13,10 @@ do
     [ -f "$(readlink $i)" ] && continue
     rm -fv $i
 done
+
+# flamegraph
+/usr/bin/curl -LO https://raw.githubusercontent.com/brendangregg/FlameGraph/master/flamegraph.pl
+chmod -v +x ./flamegraph.pl
 
 # Install scripts as a symlink
 for i in $(find . -maxdepth 1 -mindepth 1 -type f | egrep -v ${EXCLUDE})
