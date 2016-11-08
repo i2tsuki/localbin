@@ -1,4 +1,4 @@
-EXCLUDE = ".git|.gitignore|Makefile|LICENSE"
+EXCLUDE = ".git|.gitignore|install.sh|Makefile|LICENSE"
 
 install:
 	./install.sh
