@@ -7,7 +7,6 @@ mkdir -pv ${HOME}/Dropbox
 [ -z "${UID}" ] && UID="$(id -u)"
 [ -z "${GID}" ] && GID="$(id -g)"
 
-
 # docker run -d --restart=always --name=dropbox \
 docker run -ti --restart=always --name=dropbox \
        -e DBOX_UID=${UID} \
