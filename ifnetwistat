@@ -1,0 +1,7 @@
+#/bin/sh
+
+set -eu
+
+SSID="$(wpa_cli status | grep -e '^ssid=' | cut -d '=' -f 2)"
+RSSI="$(wpa_cli signal_poll | grep -i -e '^RSSI=' | cut -d '=' -f 2)"
+echo "ESSID: ${SSID} RSSI:${RSSI}"
