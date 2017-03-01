@@ -1,0 +1,17 @@
+#!/bin/sh
+
+set -e
+
+mkdir -pv ${HOME}/Dropbox
+
+[ -z "${UID}" ] && UID="$(id -u)"
+[ -z "${GID}" ] && GID="$(id -g)"
+
+
+# docker run -d --restart=always --name=dropbox \
+docker run -ti --restart=always --name=dropbox \
+       -e DBOX_UID=${UID} \
+       -e DBOX_GID=${GID} \
+       -v ${HOME}/Dropbox:/dbox/Dropbox \
+       -v /tmp/.X11-unix/:/tmp/.X11-unix/ \
+       janeczku/dropbox
