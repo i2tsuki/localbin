@@ -61,6 +61,8 @@ iptables -A OUTPUT -p tcp --dport 1935 -j ACCEPT
 iptables -A OUTPUT -p tcp --dport 11371 -j ACCEPT
 # airtame
 iptables -A OUTPUT -p tcp --dport 35482 -j ACCEPT
+# alternative irc 22245
+iptables -A OUTPUT -p tcp --dport 22245 -j ACCEPT
 
 # FTP (passive)
 iptables -A OUTPUT -p tcp --dport 1024: -m state --state ESTABLISHED,RELATED -j ACCEPT
@@ -78,7 +80,7 @@ iptables -A OUTPUT -d 10.3.0.0/16 -j ACCEPT
 
 ### modprobe
 # if ip_conntrack_ftp is module
-# modprobe ip_conntrack_ftp 
+# modprobe ip_conntrack_ftp
 
 # save
 iptables -L -nv
