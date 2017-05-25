@@ -9,11 +9,11 @@ usage()
 while getopts :rlsh: OPT
 do
     case $OPT in
-        l) RANDROPTION="--left-of LVDS1";
+        l) RANDROPTION="--left-of eDP-1";
             ;;
-        r) RANDROPTION="--right-of LVDS1";
+        r) RANDROPTION="--right-of eDP-1";
 	   ;;
-	s) RANDROPTION="--same-as LVDS1";
+	s) RANDROPTION="--same-as eDP-1";
             ;;
         h) usage
             ;;
@@ -22,5 +22,5 @@ do
     esac
 done
 
-/usr/bin/xrandr --output DP1 --mode 1024x768 ${RANDROPTION} 
+/usr/bin/xrandr --output DP-1 --mode 1024x768 ${RANDROPTION} 
 /usr/bin/nitrogen --restore
