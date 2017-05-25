@@ -52,13 +52,17 @@ iptables -A OUTPUT -p tcp --dport 9050 -j ACCEPT
 # other
 iptables -A OUTPUT -p tcp --dport 8443 -j ACCEPT
 iptables -A OUTPUT -p tcp --dport 10081 -j ACCEPT
+iptables -A OUTPUT -p tcp --dport 9000 -j ACCEPT
 iptables -A OUTPUT -p tcp --dport 5000 -j ACCEPT
+iptables -A OUTPUT -p tcp --dport 8000 -j ACCEPT
 iptables -A OUTPUT -p tcp --dport 8008 -j ACCEPT
 iptables -A OUTPUT -p tcp --dport 8080 -j ACCEPT
 # radiko
 iptables -A OUTPUT -p tcp --dport 1935 -j ACCEPT
 # ubuntu ppa
 iptables -A OUTPUT -p tcp --dport 11371 -j ACCEPT
+# webrtc
+iptables -A OUTPUT -p udp --dport 12003 -j ACCEPT
 # airtame
 iptables -A OUTPUT -p tcp --dport 35482 -j ACCEPT
 # alternative irc 22245
