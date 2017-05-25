@@ -3,7 +3,7 @@ set -eu
 
 cd "$(dirname $(readlink -f $0))"
 
-EXCLUDE="\.git|\.gitignore|Makefile|LICENSE"
+EXCLUDE="\.git|\.gitignore|Makefile|LICENSE|.install.sh"
 
 mkdir -p ${HOME}/.local/bin
 
@@ -24,7 +24,7 @@ do
     ln -sfv $(readlink -f $i) ${HOME}/.local/bin
 done
 
-# Install scripts in secrets as a symlink 
+# Install scripts in secrets as a symlink
 for i in $(find ./secrets -maxdepth 1 -mindepth 1 -type f | egrep -v ${EXCLUDE})
 do
     ln -sfv $(readlink -f $i) ${HOME}/.local/bin
