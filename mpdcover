@@ -12,6 +12,6 @@ do
     FILE=$(/bin/readlink -f "${BASE_DIR}/${FILE}")
     BASE_FILE=$(/usr/bin/basename ${FILE})
     DIR=${FILE%/"${BASE_FILE}"}
-    COVER_FILE=$(find ${DIR} -name "*.jpg" -o -name "*.png" -o -name "*.gif" | head -n 1)
+    COVER_FILE=$(find ${DIR} -maxdepth 1 -name "*.jpg" -o -name "*.png" -o -name "*.gif" | head -n 1)
     /usr/bin/convert ${COVER_FILE} -geometry ${MPD_ART_SIZE} ${MPD_ART_FILE}
 done &
