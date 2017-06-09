@@ -1,0 +1,5 @@
+#!/bin/sh
+set -eu
+
+BRANCH=$(git status | head -n 1 | cut -d' ' -f 3)
+echo ${BRANCH}
