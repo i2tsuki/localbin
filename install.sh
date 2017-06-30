@@ -29,3 +29,5 @@ for i in $(find ./secrets -maxdepth 1 -mindepth 1 -type f | egrep -v ${EXCLUDE})
 do
     ln -sfv $(readlink -f $i) ${HOME}/.local/bin
 done
+
+cargo install skim
