@@ -31,3 +31,4 @@ do
 done
 
 cargo install skim
+pip install --user gcalcli
