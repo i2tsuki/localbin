@@ -30,5 +30,5 @@ do
     ln -sfv $(readlink -f $i) ${HOME}/.local/bin
 done
 
-cargo install skim
+cargo install skim --force
 pip install --user gcalcli
