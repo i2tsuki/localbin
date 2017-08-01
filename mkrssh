@@ -1,0 +1,80 @@
+#!/bin/sh
+set -eu
+
+HOSTDOMAIN=".h"
+SERVICE=""
+ROLE=""
+
+usage() {
+    cat <<EOF
+usage:
+  $0 serivce::role
+
+options:
+  --help,-h                                    Show help
+EOF
+    exit 1
+}
+
+flag_parse()
+{
+    for i in $*
+    do
+	case $i in
+	    "--help"|"-h")
+		usage
+		;;
+	    *)
+		SERVICE="${i%%::*}"
+		ROLE="${i##*::}"
+		if [ "${SERVICE}" = "" ] ; then
+		    usage
+		fi
+		if [ "${ROLE}" = "" ] ; then
+		    usage
+		fi
+		;;
+	esac
+	shift
+    done
+}
+
+# main
+flag_parse $@
+MKRCMD="${GOPATH}/bin/mkr"
+
+if [ "${ROLE}" = "*" ] ; then
+    HOSTS=$($MKRCMD hosts --service ${SERVICE} --format "{{range .}}\"{{.Name}}\" {{end}}")
+else
+    HOSTS=$($MKRCMD hosts --service ${SERVICE} --role ${ROLE} --format "{{range .}}\"{{.Name}}\" {{end}}")
+    HOSTS=(${HOSTS})
+fi
+
+if [ "${HOSTS}" = "null" ] ; then
+    echo "service::role host is null" 2>&1
+    exit 0
+fi
+HOSTS="$(for i in ${HOSTS[*]}; do echo $i; done | sort)"
+SESSION_NAME="mkrssh-$$"
+
+tmux start-server
+
+IS_FIRST="true"
+for i in ${HOSTS}; do
+    if [ "${i%%HOSTDOMAIN\"}\"" = $i ]; then
+	continue
+    fi
+
+    CMD="ssh $i"
+    if [ "${IS_FIRST}" == "true" ]; then
+        tmux new-session -d -s ${SESSION_NAME} "$CMD"
+        IS_FIRST="false"
+    else
+        tmux split-window  -t ${SESSION_NAME} "$CMD"
+        tmux select-layout -t ${SESSION_NAME} tiled 1>/dev/null
+    fi
+done
+
+tmux set-window-option -t ${SESSION_NAME} synchronize-panes on
+tmux select-pane -t 0
+tmux attach-session -t ${SESSION_NAME}
