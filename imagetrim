@@ -1,0 +1,6 @@
+#!/bin/sh
+set -eu
+
+ARG=$@
+/usr/bin/convert -trim ${ARG} ${ARG}.tmp
+mv -v ${ARG}.tmp ${ARG}
