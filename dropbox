@@ -12,5 +12,7 @@ docker run -ti --restart=always --name=dropbox \
        -e DBOX_UID=${UID} \
        -e DBOX_GID=${GID} \
        -v ${HOME}/Dropbox:/dbox/Dropbox \
+       -v ${HOME}/.dropbox:/dbox/.dropbox \
        -v /tmp/.X11-unix/:/tmp/.X11-unix/ \
+       -v /var/run/dbus/system_bus_socket:/var/run/dbus/system_bus_socket \
        janeczku/dropbox
