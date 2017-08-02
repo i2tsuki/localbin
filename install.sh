@@ -31,4 +31,5 @@ do
 done
 
 cargo install skim --force
+cargo install mdbook --force
 pip install --user gcalcli
