@@ -60,19 +60,25 @@ SESSION_NAME="mkrssh-$$"
 tmux start-server
 
 IS_FIRST="true"
+COUNT="0"
+echo ${MAX_PANE}
 for i in ${HOSTS}; do
     if [ "${i%%HOSTDOMAIN\"}\"" = $i ]; then
 	continue
     fi
-
     CMD="ssh $i"
     if [ "${IS_FIRST}" == "true" ]; then
         tmux new-session -d -s ${SESSION_NAME} "$CMD"
         IS_FIRST="false"
     else
-        tmux split-window  -t ${SESSION_NAME} "$CMD"
-        tmux select-layout -t ${SESSION_NAME} tiled 1>/dev/null
+	if [ "$((${COUNT} % ${MAX_PANE}))" = "0" ] ; then
+            tmux new-window ${CMD}
+	else
+            tmux split-window  -t ${SESSION_NAME} "$CMD"
+            tmux select-layout -t ${SESSION_NAME} tiled 1>/dev/null
+	fi
     fi
+    COUNT="$((COUNT+1))"
 done
 
 tmux set-window-option -t ${SESSION_NAME} synchronize-panes on
