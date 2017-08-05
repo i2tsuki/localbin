@@ -4,6 +4,8 @@ set -eu
 HOSTDOMAIN=".h"
 SERVICE=""
 ROLE=""
+MAX_PANE="15"
+MAX_PANE_OPTS="0"
 
 usage() {
     cat <<EOF
@@ -11,6 +13,7 @@ usage:
   $0 serivce::role
 
 options:
+  --max-pane,-m                                Max Pane
   --help,-h                                    Show help
 EOF
     exit 1
@@ -24,7 +27,11 @@ flag_parse()
 	    "--help"|"-h")
 		usage
 		;;
+	    "--max-pane"|"-m")
+		MAX_PANE_OPTS="1"
+		;;
 	    *)
+		[ ${MAX_PANE_OPTS} = "1" ] && MAX_PANE=$i && MAX_PANE_OPTS="0" && continue
 		SERVICE="${i%%::*}"
 		ROLE="${i##*::}"
 		if [ "${SERVICE}" = "" ] ; then
@@ -73,6 +80,8 @@ for i in ${HOSTS}; do
     else
 	if [ "$((${COUNT} % ${MAX_PANE}))" = "0" ] ; then
             tmux new-window ${CMD}
+            tmux split-window  -t ${SESSION_NAME} "$CMD"
+            tmux select-layout -t ${SESSION_NAME} tiled 1>/dev/null
 	else
             tmux split-window  -t ${SESSION_NAME} "$CMD"
             tmux select-layout -t ${SESSION_NAME} tiled 1>/dev/null
