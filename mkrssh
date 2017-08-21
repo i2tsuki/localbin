@@ -32,8 +32,9 @@ flag_parse()
 		;;
 	    *)
 		[ ${MAX_PANE_OPTS} = "1" ] && MAX_PANE=$i && MAX_PANE_OPTS="0" && continue
-		SERVICE="${i%%::*}"
-		ROLE="${i##*::}"
+		i="$(echo $i | sed -e 's/::/:/')"
+		SERVICE="${i%%:*}"
+		ROLE="${i##*:}"
 		if [ "${SERVICE}" = "" ] ; then
 		    usage
 		fi
