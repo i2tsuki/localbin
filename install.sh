@@ -30,6 +30,20 @@ do
     ln -sfv $(readlink -f $i) ${HOME}/.local/bin
 done
 
-cargo install skim --force
-cargo install mdbook --force
+which npm
+if [ $? = "0" ] ; then
+    npm install prettier
+fi
+
+which go
+if [ $? = "0" ] ; then
+    go get -u github.com/mackerelio/mkr
+    go get -u github.com/tcnksm/ghr
+fi
+
 pip install --user gcalcli
+pip install --user git+https://github.com/evertrol/mpyfit.git#egg=mpyfit
+pip install --user pyfits astropy ipython sympy git+https://github.com/rcbrgs/tuna
+
+cargo install skim
+cargo install mdbook
