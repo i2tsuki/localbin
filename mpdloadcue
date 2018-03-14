@@ -1,7 +1,8 @@
 #!/bin/sh
-set -eu
+set -eux
 
 MUSIC_DIR="${HOME}/Music"
+# MUSIC_DIR="${HOME}/ACDFuse/EAC"
 
 mpc clear > /dev/null
 printf "mpc clear: success.\n"
@@ -11,4 +12,9 @@ printf "mpc update: success.\n"
 for i in $(find ${MUSIC_DIR} -name "*.cue")
 do
     mpc load "${i##${MUSIC_DIR}/}"
+done
+
+for i in $(find ${MUSIC_DIR} -name "*.mp3")
+do
+    mpc add "${i##${MUSIC_DIR}/}"
 done
