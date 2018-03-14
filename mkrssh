@@ -1,5 +1,5 @@
 #!/bin/sh
-set -eu
+set -eux
 
 HOSTDOMAIN=".h"
 SERVICE=""
@@ -31,6 +31,7 @@ flag_parse()
 		MAX_PANE_OPTS="1"
 		;;
 	    *)
+		HOSTS=""
 		[ ${MAX_PANE_OPTS} = "1" ] && MAX_PANE=$i && MAX_PANE_OPTS="0" && continue
 		i="$(echo $i | sed -e 's/::/:/')"
 		SERVICE="${i%%:*}"
@@ -51,11 +52,13 @@ flag_parse()
 flag_parse $@
 MKRCMD="${GOPATH}/bin/mkr"
 
-if [ "${ROLE}" = "*" ] ; then
-    HOSTS=$($MKRCMD hosts --service ${SERVICE} --format "{{range .}}\"{{.Name}}\" {{end}}")
-else
-    HOSTS=$($MKRCMD hosts --service ${SERVICE} --role ${ROLE} --format "{{range .}}\"{{.Name}}\" {{end}}")
-    HOSTS=(${HOSTS})
+if [ -z "${HOSTS}" ] ; then
+    if [ "${ROLE}" = "*" ] ; then
+        HOSTS=$($MKRCMD hosts --service ${SERVICE} --format "{{range .}}\"{{.Name}}\" {{end}}")
+    else
+        HOSTS=$($MKRCMD hosts --service ${SERVICE} --role ${ROLE} --format "{{range .}}\"{{.Name}}\" {{end}}")
+        HOSTS=(${HOSTS})
+    fi
 fi
 
 if [ "${HOSTS}" = "null" ] ; then
@@ -69,7 +72,6 @@ tmux start-server
 
 IS_FIRST="true"
 COUNT="0"
-echo ${MAX_PANE}
 for i in ${HOSTS}; do
     if [ "${i%%HOSTDOMAIN\"}\"" = $i ]; then
 	continue
@@ -86,6 +88,7 @@ for i in ${HOSTS}; do
 	else
             tmux split-window  -t ${SESSION_NAME} "$CMD"
             tmux select-layout -t ${SESSION_NAME} tiled 1>/dev/null
+	    sleep 0.1s
 	fi
     fi
     COUNT="$((COUNT+1))"
