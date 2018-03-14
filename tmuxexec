@@ -1,0 +1,47 @@
+#!/bin/sh
+set -eu
+
+SESSION_OPTS="0"
+SESSION_NAME=""
+COMMAND=""
+
+usage() {
+    cat <<EOF
+usage:
+  $0 [--session-name,-t <SESSION_NAME>] [COMMAND]
+
+options:
+  --help,-h                                    Show help
+  --session-name,-t                            Session name
+EOF
+    exit 1
+}
+
+flag_parse()
+{
+    for i in $*
+    do
+	case $i in
+	    "--help"|"-h")
+		usage
+		;;
+	    "--session-name"|"-t")
+		SESSION_OPTS="1"
+		;;
+	    *)
+		[ "${SESSION_OPTS}" = "1" ] && SESSION_NAME=$i && SESSION_OPTS="0" && continue
+		COMMAND="${COMMAND} $i"
+		;;
+	esac
+	shift
+    done
+}
+
+[ $# = "0" ] && usage
+flag_parse $@
+
+tmux set-option -g remain-on-exit on
+tmux split-window  -t ${SESSION_NAME} ${COMMAND}
+sleep 0.5
+set +e
+tmux select-layout -t ${SESSION_NAME} tiled
