@@ -1,5 +1,5 @@
 #!/bin/sh
-set -eu
+set -eux
 
 usage()
 {
@@ -11,11 +11,11 @@ RANDROPTION=""
 while getopts :rloh: OPT
 do
     case $OPT in
-	o) RANDROPTION="--output LVDS1 --off"
-	   ;;
-        l) RANDROPTION="--left-of LVDS1";
+        o) RANDROPTION="--output eDP-1 --off"
             ;;
-        r) RANDROPTION="--right-of LVDS1";
+        l) RANDROPTION="--left-of eDP-1";
+            ;;
+        r) RANDROPTION="--right-of eDP-1";
            ;;
         h) usage
             ;;
@@ -24,6 +24,5 @@ do
     esac
 done
 
-/usr/bin/xrandr --output HDMI1 --mode 1920x1080 ${RANDROPTION}
+/usr/bin/xrandr --output HDMI-1 --auto ${RANDROPTION}
 /usr/bin/nitrogen --restore
-exec xmobar -x1
