@@ -1,8 +1,9 @@
 #!/bin/sh
 set -eu
 
-xrandr --output HDMI1 --off
-xrandr --output LVDS1 --mode 1600x900
+xrandr --output HDMI-2 --off
+xrandr --output HDMI-1 --off
+xrandr --output eDP-1 --mode 2560x1440
 nitrogen --restore
 
 for i in $(pgrep xmobar)
