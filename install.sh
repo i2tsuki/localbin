@@ -41,9 +41,16 @@ if [ $? = "0" ] ; then
     go get -u github.com/tcnksm/ghr
 fi
 
-pip install --user gcalcli
-pip install --user git+https://github.com/evertrol/mpyfit.git#egg=mpyfit
-pip install --user pyfits astropy ipython sympy git+https://github.com/rcbrgs/tuna
+if (which pip) ; then
+    PIP=pip
+else
+    PIP=pip3
+fi
+
+${PIP} install --user gcalcli
+${PIP} install --user numpy
+${PIP} install --user git+https://github.com/evertrol/mpyfit.git#egg=mpyfit
+# ${PIP} install --user pyfits astropy ipython sympy git+https://github.com/rcbrgs/tuna
 
 cargo install skim
 cargo install mdbook
