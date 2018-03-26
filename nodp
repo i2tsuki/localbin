@@ -1,6 +1,0 @@
-#!/bin/sh
-set -eu
-
-/usr/bin/xrandr --output DP-1 --off
-/usr/bin/xrandr --output eDP-1 --mode 2560x1440
-/usr/bin/nitrogen --restore
