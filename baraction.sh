@@ -15,7 +15,7 @@ exec 2>&1
   while (pgrep polybar)
   do
       echo "pkill -x polybar"
-      pkill -x polybar
+      kill -s KILL $(pgrep polybar)
       sleep 1s
   done
 
