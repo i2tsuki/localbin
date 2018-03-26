@@ -1,0 +1,13 @@
+#!/bin/sh
+
+MODE="1600x900_60.00"
+
+set -ux
+
+xrandr --newmode ${MODE} 118.25 1600 1696 1856 2112 900 903 908 934 -hsync +vsync
+xrandr --addmode eDP-1 ${MODE}
+
+set -eux
+
+xrandr --fbmm ${MODE} --output eDP-1 --mode ${MODE} --output DP-1 --off
+xrandr --fb 3840x2160
