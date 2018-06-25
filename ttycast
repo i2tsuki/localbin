@@ -1,4 +1,0 @@
-#!/bin/sh
-set -eu
-
-reset && ttyrec ${HOME}/node_modules/.bin/ttycast
