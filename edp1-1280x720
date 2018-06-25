@@ -1,0 +1,17 @@
+#!/bin/sh
+
+set -ux
+
+MODE="1280x720_60.00"
+CVT=$(cvt 1280 720 60.00 | grep 'Modeline' --color=none | python -sc '
+with open("/dev/stdin") as f:
+    for line in f:
+        print(line.replace("Modeline ", "").replace("\"", ""))
+')
+
+xrandr --newmode ${CVT}
+xrandr --addmode eDP-1 ${MODE}
+
+set -eux
+
+xrandr --fb 1280x720 --fbmm ${MODE} --output eDP-1 --mode ${MODE} --output DP-1 --off
