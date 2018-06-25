@@ -1,12 +1,14 @@
 #!/bin/sh
+
 set -eu
 
-/usr/bin/cdrdao read-cd --device /dev/sr0 --read-raw --paranoia-mode 3 --datafile file.bin file.toc
-/usr/bin/eject
-/usr/bin/flac -6 -V --force-raw --sample-rate=44100 --channels=2 --bps=16 --endian=big --sign=signed file.bin -o file.flac
-/usr/bin/toc2cue file.toc file.cue
-/bin/rm -fv ./file.bin ./file.toc
-# pygrace.py file.cue -o output.cue
-pygrace -v --custom --output output.cue file.cue
-/bin/rm -fv ./file.cue
-mv -v ./output.cue ./file.cue
+cdrdao read-cd --device /dev/sr0 --read-raw --paranoia-mode 3 --datadisc disc.bin disc.toc
+
+eject
+
+toc2cue ./disc.toc ./disc.cue
+flac -6 -V --force-raw --sample-rate=44100 --channels=2 --bps=16 --endian=big --sign=signed -o ./disc.flac ./disc.bin
+rm -fv ./disc.bin ./disc.toc
+
+ALBUM="$(pygrace --custom --output file.cue ./disc.cue)"
+rm -fv ./disc.cue
