@@ -48,6 +48,17 @@ do
     fi
 done
 
+xrandr --output eDP-1 --primary
+
+# Remove monitors except monitor eDP-1
+for i in $(bspc query -M --names)
+do
+    if [ $i != "eDP-1" ] ; then
+	echo $i
+        bspc monitor $i -r
+    fi
+done
+
 flag_parse $@
 
 bspc monitor eDP-1 -g ${MODE}+0+0
