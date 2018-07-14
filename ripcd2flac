@@ -12,3 +12,5 @@ rm -fv ./disc.bin ./disc.toc
 
 ALBUM="$(pygrace --custom --output file.cue ./disc.cue)"
 rm -fv ./disc.cue
+
+echo ${ALBUM}
