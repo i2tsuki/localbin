@@ -9,7 +9,7 @@ usage()
 
 RANDROPTION=""
 MODE="2560x1440"
-FB="2560x2160"
+FB="2560x1440"
 
 flag_parse()
 {
