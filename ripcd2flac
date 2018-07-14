@@ -3,6 +3,7 @@
 set -eu
 
 cdrdao read-cd --device /dev/sr0 --read-raw --paranoia-mode 3 --datadisc disc.bin disc.toc
+cdrdao read-cd --device /dev/sr0 --read-raw --paranoia-mode 3 --datafile disc.bin disc.toc
 
 eject
 
