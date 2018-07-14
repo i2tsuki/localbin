@@ -73,3 +73,5 @@ nitrogen --restore
 set +e
 bspc desktop Desktop -r
 set -e
+
+polybar top &
