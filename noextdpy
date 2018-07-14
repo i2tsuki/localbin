@@ -30,6 +30,24 @@ flag_parse()
     done
 }
 
+while true
+do
+    if [ -n "$(pidof polybar)" ] ; then
+        kill $(pidof polybar)
+    else
+        break
+    fi
+done
+
+while true
+do
+    if [ -n "$(pidof compton)" ] ; then
+        kill $(pidof compton)
+    else
+        break
+    fi
+done
+
 flag_parse $@
 xrandr --output eDP-1 --mode ${MODE} --output DP-1 --off --pos 0x0
 xrandr --fb ${FB} --output eDP-1 --pos 0x0 --transform 1,0,0,0,1,0,0,0,1
