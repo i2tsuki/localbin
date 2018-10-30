@@ -7,6 +7,12 @@ ROLE=""
 MAX_PANE="16"
 MAX_PANE_OPTS="0"
 
+set +u
+if [ -z "${HOSTS}" ] ; then
+    HOSTS=""
+fi
+set -u
+
 usage() {
     cat <<EOF
 usage:
@@ -31,7 +37,6 @@ flag_parse()
 		MAX_PANE_OPTS="1"
 		;;
 	    *)
-		HOSTS=""
 		[ ${MAX_PANE_OPTS} = "1" ] && MAX_PANE=$i && MAX_PANE_OPTS="0" && continue
 		i="$(echo $i | sed -e 's/::/:/')"
 		SERVICE="${i%%:*}"
