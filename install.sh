@@ -33,6 +33,7 @@ done
 which npm
 if [ $? = "0" ] ; then
     npm install prettier
+    npm install markdown-to-medium
 fi
 
 which go
