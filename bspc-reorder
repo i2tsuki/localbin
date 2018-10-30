@@ -1,0 +1,95 @@
+#!/bin/sh
+set -eu
+
+REVERSE="0"
+MONITOR_OPTS="0"
+MONITOR=""
+
+
+usage() {
+    cat <<EOF
+usage:
+  $0 [OPTIONS]
+
+options:
+  --reverse,-r                                 Traverse Desktop
+  --help,-h                                    Show help
+EOF
+    exit 1
+}
+
+flag_parse()
+{
+    for i in $*
+    do
+        case $i in
+            "--help"|"-h")
+                usage
+                ;;
+            "--to-monitor"|"-m")
+                MONITOR_OPTS="1"
+                ;;
+            *)
+            if [ "${MONITOR_OPTS}" = "1" ] ; then
+                    MONITOR=$i
+            MONITOR_OPTS="0"
+            continue
+        fi
+                usage
+                ;;
+        esac
+        shift
+    done
+}
+
+move_desktops()
+{
+    for i in $(bspc query -M --names)
+    do
+        if [ $i != "${MONITOR}" ] ; then
+            WORKNUM="1"
+            for k in $(bspc query -D --monitor ${MONITOR} --names)
+            do
+                if [ "$k" != "Desktop" ] ; then
+                    WORKNUM=$((${WORKNUM}+1))
+                    continue
+                else
+                    set +e
+                    bspc desktop "${MONITOR}:^${WORKNUM}" -m $i
+                    echo $?
+                    set -e
+                fi
+            done
+
+            WORKNUM="1"
+            for k in $(bspc query -D --monitor $i --names)
+            do
+                if [ "$k" = "Desktop" ] ; then
+                    WORKNUM=$((${WORKNUM}+1))
+                    continue
+                else
+		    set +e
+                    bspc desktop $i:^${WORKNUM} -m ${MONITOR}
+		    set -e
+                fi
+            done
+        fi
+    done
+}
+
+flag_parse $@
+OTHER_MONITOR=""
+for i in $(bspc query -M --names)
+do
+    [ $i != "${MONITOR}" ] && OTHER_MONITOR="$i ${OTHER_MONITOR}"
+done
+bspc wm -O ${MONITOR} ${OTHER_MONITOR}
+
+for i in $(seq 1 2)
+do
+    move_desktops
+    echo "move_desktops"
+    bspc wm -O ${MONITOR} ${OTHER_MONITOR}
+done
+
+bspc monitor --reorder-desktops www edit code terminal file mail slack media keepass vm Desktop
