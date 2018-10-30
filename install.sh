@@ -64,3 +64,9 @@ fi
 curl -LO https://storage.googleapis.com/kubernetes-helm/helm-v2.9.1-linux-amd64.tar.gz
 mv -v ./linux-amd64/helm ${GOPATH}/bin/
 rm -rfv ./linux-amd64 ./helm-v2.9.1-linux-amd64.tar.gz
+
+# Nerd Fonts installation
+mkdir -pv ${HOME}/.fonts/nerd-fonts
+cd ${HOME}/.fonts/nerd-fonts
+curl -LO https://github.com/ryanoasis/nerd-fonts/releases/download/v2.0.0/FiraCode.zip
+fc-cache -f -v
