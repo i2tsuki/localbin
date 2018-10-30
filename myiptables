@@ -57,6 +57,8 @@ iptables -A OUTPUT -p tcp --dport 5000 -j ACCEPT
 iptables -A OUTPUT -p tcp --dport 8000 -j ACCEPT
 iptables -A OUTPUT -p tcp --dport 8008 -j ACCEPT
 iptables -A OUTPUT -p tcp --dport 8080 -j ACCEPT
+iptables -A OUTPUT -p tcp --dport 9200 -j ACCEPT
+iptables -A OUTPUT -p tcp --dport 24224 -j ACCEPT
 # radiko
 iptables -A OUTPUT -p tcp --dport 1935 -j ACCEPT
 # ubuntu ppa
