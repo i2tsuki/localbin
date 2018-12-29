@@ -11,6 +11,7 @@ flac -6 -V --force-raw --sample-rate=44100 --channels=2 --bps=16 --endian=big --
 rm -fv ./disc.bin ./disc.toc
 
 ALBUM="$(pygrace --custom --output file.cue ./disc.cue)"
-rm -fv ./disc.cue
 
 echo ${ALBUM}
+rm -fv ${ALBUM}/disc.cue
+mv ./disc.flac ./${ALBUM}/file.flac
