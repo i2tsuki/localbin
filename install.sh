@@ -35,6 +35,7 @@ if [ $? = "0" ] ; then
     npm install prettier
     npm install markdown-to-medium
     npm install yarn
+    npm install aws-cdk
 fi
 
 which go
