@@ -36,6 +36,7 @@ if [ $? = "0" ] ; then
     npm install markdown-to-medium
     npm install yarn
     npm install aws-cdk
+    npm install tsc
 fi
 
 which go
