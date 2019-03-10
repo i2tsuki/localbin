@@ -1,3 +1,7 @@
+# -*- mode: gitignore; -*-
+*~
+\#*\#
+
 secrets/
 
 flamegraph.pl
