@@ -36,7 +36,10 @@ if [ $? = "0" ] ; then
     npm install markdown-to-medium
     npm install yarn
     npm install aws-cdk
+    npm install typescript
     npm install tsc
+    npm install tslint
+    npm install tslint-config-prettier
 fi
 
 which go
