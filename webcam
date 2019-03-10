@@ -1,6 +1,6 @@
 #!/bin/sh
 if [ "$1" = "mirror" ] ; then
-    /usr/bin/mplayer tv:// -tv driver=v4l2:width=640:height=480:device=/dev/video0 -fps 15 -vf mirror
+    /usr/bin/mpv --tv-device=/dev/video0 --no-tv-audio --tv-driver=v4l2 --tv-width=640 --tv-height=480 --tv-fps=15 --vf=mirror tv://
     exit 0
 fi
-/usr/bin/mplayer tv:// -tv driver=v4l2:width=640:height=480:device=/dev/video0 -fps 15
+/usr/bin/mpv --tv-device=/dev/video0 --no-tv-audio --tv-driver=v4l2 --tv-width=640 --tv-height=480 --tv-fps=15 tv://
