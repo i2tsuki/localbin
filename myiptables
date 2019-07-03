@@ -93,4 +93,4 @@ iptables -A OUTPUT -d 10.3.0.0/16 -j ACCEPT
 
 # save
 iptables -L -nv
-/etc/init.d/iptables save
+systemctl status iptables-store.service
