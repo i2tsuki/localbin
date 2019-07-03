@@ -61,10 +61,6 @@ ${PIP} install --user git+https://github.com/evertrol/mpyfit.git#egg=mpyfit
 cargo install skim
 cargo install mdbook
 
-curl -LO https://storage.googleapis.com/kubernetes-helm/helm-v2.9.1-linux-amd64.tar.gz
-mv -v ./linux-amd64/helm ${GOPATH}/bin/
-rm -rfv ./linux-amd64 ./helm-v2.9.1-linux-amd64.tar.gz
-
 # Nerd Fonts installation
 mkdir -pv ${HOME}/.fonts/nerd-fonts
 cd ${HOME}/.fonts/nerd-fonts
