@@ -47,10 +47,10 @@ if [ $? = "0" ] ; then
     go get -u github.com/tcnksm/ghr
 fi
 
-if (which pip) ; then
-    PIP=pip
-else
+if (which pip3) ; then
     PIP=pip3
+else
+    exit 1
 fi
 
 ${PIP} install --user gcalcli
