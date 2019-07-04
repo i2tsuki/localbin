@@ -44,7 +44,6 @@ fi
 
 which go
 if [ $? = "0" ] ; then
-    go get -u github.com/mackerelio/mkr
     go get -u github.com/tcnksm/ghr
 fi
 
