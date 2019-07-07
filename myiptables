@@ -45,6 +45,8 @@ iptables -A OUTPUT -p tcp --dport 587 -j ACCEPT
 iptables -A OUTPUT -p tcp --dport 993 -j ACCEPT
 # rdp
 iptables -A OUTPUT -p tcp --dport 3389 -j ACCEPT
+# iperf3
+iptables -A OUTPUT -p tcp --dport 5201 -j ACCEPT
 # irc
 iptables -A OUTPUT -p tcp --dport 6667 -j ACCEPT
 # git
