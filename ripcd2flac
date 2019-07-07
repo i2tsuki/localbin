@@ -8,10 +8,13 @@ eject
 
 toc2cue ./disc.toc ./disc.cue
 flac -6 -V --force-raw --sample-rate=44100 --channels=2 --bps=16 --endian=big --sign=signed -o ./disc.flac ./disc.bin
+
+# ALBUM="$(pygrace --custom --output file.cue ./disc.cue)"
+# echo ${ALBUM}
+# rm -fv ${ALBUM}/disc.cue
+
+cdrdao read-cddb --cddb-servers freedb.org ./disc.toc
+cueconvert -i toc -o cue ./disc.toc ./disc.cue
+
 rm -fv ./disc.bin ./disc.toc
-
-ALBUM="$(pygrace --custom --output file.cue ./disc.cue)"
-
-echo ${ALBUM}
-rm -fv ${ALBUM}/disc.cue
 mv ./disc.flac ./${ALBUM}/file.flac
