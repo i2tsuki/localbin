@@ -30,6 +30,7 @@ do
     ln -sfv $(readlink -f $i) ${HOME}/.local/bin
 done
 
+cd ${HOME}
 which npm
 if [ $? = "0" ] ; then
     npm install prettier
@@ -41,6 +42,7 @@ if [ $? = "0" ] ; then
     npm install tslint
     npm install tslint-config-prettier
 fi
+cd ${OLDPWD}
 
 which go
 if [ $? = "0" ] ; then
