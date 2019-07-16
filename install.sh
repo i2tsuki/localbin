@@ -48,6 +48,8 @@ cd ${OLDPWD}
 which go
 if [ $? = "0" ] ; then
     go get -u github.com/tcnksm/ghr
+    go get -u github.com/FiloSottile/mkcert
+    go get -u github.com/direnv/direnv
 fi
 
 if (which pip3) ; then
@@ -59,6 +61,11 @@ fi
 ${PIP} install --user gcalcli
 ${PIP} install --user numpy
 ${PIP} install --user git+https://github.com/evertrol/mpyfit.git#egg=mpyfit
+${PIP} install --user docker-compose
+${PIP} install --user flake8
+${PIP} install --user black
+${PIP} install --user awscli
+${PIP} install --user ec2instanceconnectcli-latest.tar.gz
 # ${PIP} install --user pyfits astropy ipython sympy git+https://github.com/rcbrgs/tuna
 
 cargo install skim
