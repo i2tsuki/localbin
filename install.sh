@@ -53,7 +53,7 @@ if [ $? = "0" ] ; then
 fi
 
 if (which pip3) ; then
-    PIP=pip3
+    PIP="pip3 -q"
 else
     exit 1
 fi
