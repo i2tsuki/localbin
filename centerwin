@@ -1,0 +1,66 @@
+#!/bin/sh
+
+set -eux
+
+PEEK="FALSE"
+
+flag_parse()
+{
+    for i in $*
+    do
+	case $i in
+	    --peek)
+		PEEK="TRUE"
+		;;
+   	    -p)
+		PEEK="TRUE"
+		;;
+	esac
+	shift
+    done
+}
+
+flag_parse $@
+
+DISPLAY_W="$(xrandr --screen 0 | head -n 1 | sed -r "s/^.*current ([0-9]+) x ([0-9]+),.*/\1/")"
+DISPLAY_H="$(xrandr --screen 0 | head -n 1 | sed -r "s/^.*current ([0-9]+) x ([0-9]+),.*/\2/")"
+
+HIDPI="TRUE"
+# Calculate display height remove top bar (ex. polybar)
+DISPLAY_H="$((${DISPLAY_H} - 32))"
+
+if [ "${HIDPI}" = "TRUE" ] ; then
+    RESIZE_W="1920"
+    RESIZE_H="1080"
+elif [ "${HIDPI}" = "FALSE" ] ; then
+    RESIZE_W="960"
+    RESIZE_H="540"
+fi
+
+if [ "${PEEK}" = "TRUE" ] ; then
+    if [ "${HIDPI}" = "TRUE" ] ; then
+    RESIZE_W=$((${RESIZE_W}+8))
+    RESIZE_H=$((${RESIZE_H}+94))
+    elif [ "${HIDPI}" = "FALSE" ] ; then
+      RESIZE_W=$((${RESIZE_W}+4))
+      RESIZE_H=$((${RESIZE_H}+46))
+    fi
+fi
+
+ID="$(bspc query -N focused -n)"
+xdotool windowsize ${ID} ${RESIZE_W} ${RESIZE_H}
+WINDOW_W="$(xwininfo -id ${ID} -stats 2>&1 | grep 'Width' | cut -d ':' -f 2 | tr -d ' ')"
+WINDOW_H="$(xwininfo -id ${ID} -stats 2>&1 | grep 'Height' | cut -d ':' -f 2 | tr -d ' ')"
+GEOMETRY_W="$(((${DISPLAY_W} - ${WINDOW_W})/2))"
+# `32` is menu bar height
+GEOMETRY_H="$(((${DISPLAY_H} - ${WINDOW_H})/2 + (32 - 4)))"
+
+if [ "${PEEK}" = "TRUE" ] ; then
+    if [ "${HIDPI}" = "TRUE" ] ; then
+        GEOMETRY_H="$((${GEOMETRY_H}-43))"
+    elif [ "${HIDPI}" = "FALSE" ] ; then
+        GEOMETRY_H="$((${GEOMETRY_H}-22))"
+    fi
+fi
+
+xdotool windowmove ${ID} ${GEOMETRY_W} ${GEOMETRY_H}
