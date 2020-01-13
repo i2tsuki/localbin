@@ -42,6 +42,9 @@ if [ $? = "0" ] ; then
     npm install tsc
     npm install tslint
     npm install tslint-config-prettier
+    npm install ts-node
+    npm install htpasswd
+    npm install p3x-onenote
 fi
 cd ${OLDPWD}
 
