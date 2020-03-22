@@ -21,6 +21,9 @@ iptables -A INPUT -p icmp --icmp-type echo-reply -j ACCEPT
 iptables -A INPUT -p icmp --icmp-type echo-request -j ACCEPT
 iptables -A INPUT -p udp --sport 53 -j ACCEPT
 iptables -A INPUT -p udp --sport 123 -j ACCEPT
+iptables -A INPUT -p udp --sport 32768: -j ACCEPT
+# TURN Protocol
+iptables -A INPUT -p udp --sport 3478 -j ACCEPT
 
 ### output
 # icmp
@@ -45,6 +48,9 @@ iptables -A OUTPUT -p tcp --dport 587 -j ACCEPT
 iptables -A OUTPUT -p tcp --dport 993 -j ACCEPT
 # rdp
 iptables -A OUTPUT -p tcp --dport 3389 -j ACCEPT
+# STUN/TURN server protocol
+iptables -A OUTPUT -p tcp --dport 3478 -j ACCEPT
+iptables -A OUTPUT -p udp --dport 3478 -j ACCEPT
 # iperf3
 iptables -A OUTPUT -p tcp --dport 5201 -j ACCEPT
 # irc
@@ -80,6 +86,7 @@ iptables -A OUTPUT -p tcp --dport 1024: -m state --state ESTABLISHED,RELATED -j 
 # udp
 iptables -A OUTPUT -p udp --dport 53 -j ACCEPT
 iptables -A OUTPUT -p udp --dport 123 -j ACCEPT
+iptables -A OUTPUT -p udp -j ACCEPT
 # LINE (?)
 iptables -A OUTPUT -p udp --sport 64000:64100 --dport 33434:33535 -j ACCEPT
 # LOCAL
