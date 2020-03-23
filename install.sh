@@ -34,7 +34,6 @@ cd ${HOME}
 which npm
 if [ $? = "0" ] ; then
     npm install prettier
-    npm install js-beautify
     npm install markdown-to-medium
     npm install yarn
     npm install aws-cdk
@@ -44,7 +43,6 @@ if [ $? = "0" ] ; then
     npm install tslint-config-prettier
     npm install ts-node
     npm install htpasswd
-    npm install p3x-onenote
 fi
 cd ${OLDPWD}
 
