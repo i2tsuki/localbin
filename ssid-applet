@@ -1,0 +1,3 @@
+#!/bin/sh
+
+printf "　📶 $(nmcli connection show --active --order type | tail -n 1 | cut -d ' ' -f 1)　🔆 %.0f " "$(light -G)"
