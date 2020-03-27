@@ -1,0 +1,5 @@
+#!/bin/sh
+WM_ID="$(xprop -root _NET_ACTIVE_WINDOW | cut -d '#' -f 2 | tr -d ' ')"
+WM_CLASS="$(xprop -id "${WM_ID}" WM_CLASS | cut -d '=' -f 2)"
+WM_NAME="$(xprop -id "${WM_ID}" WM_NAME | cut -d '=' -f 2)"
+printf "%s%1s" "${WM_CLASS}" "${WM_NAME}"
