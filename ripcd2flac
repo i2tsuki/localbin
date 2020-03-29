@@ -6,12 +6,13 @@ cdrdao read-cd --device /dev/sr0 --read-raw --paranoia-mode 3 --datafile disc.bi
 
 eject
 
-toc2cue ./disc.toc ./disc.cue
+# Convert `disc.bin` to `disc.flac`
 flac -6 -V --force-raw --sample-rate=44100 --channels=2 --bps=16 --endian=big --sign=signed -o ./disc.flac ./disc.bin
 
 # ALBUM="$(pygrace --custom --output file.cue ./disc.cue)"
 # echo ${ALBUM}
 # rm -fv ${ALBUM}/disc.cue
+cueconvert -i toc -o cue ./file.toc ./file.cue
 
 cdrdao read-cddb --cddb-servers freedb.org ./disc.toc
 cueconvert -i toc -o cue ./disc.toc ./disc.cue
