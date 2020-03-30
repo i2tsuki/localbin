@@ -1,6 +1,6 @@
 #!/bin/sh
 if [ "$1" = "mirror" ] ; then
-    /usr/bin/mpv --tv-device=/dev/video0 --no-tv-audio --tv-driver=v4l2 --tv-width=640 --tv-height=480 --tv-fps=15 --vf=mirror tv://
+    /usr/bin/mpv av://v4l2:/dev/video0 --profile=low-latency --vf-toggle=hflip
     exit 0
 fi
-/usr/bin/mpv --tv-device=/dev/video0 --no-tv-audio --tv-driver=v4l2 --tv-width=640 --tv-height=480 --tv-fps=15 tv://
+/usr/bin/mpv av://v4l2:/dev/video0 --profile=low-latency
