@@ -70,8 +70,8 @@ ${PIP} install --user ec2instanceconnectcli-latest.tar.gz
 ${PIP} install --user mypy
 # ${PIP} install --user pyfits astropy ipython sympy git+https://github.com/rcbrgs/tuna
 
-cargo install skim
-cargo install mdbook
+which sk || cargo install skim
+which mdbook || cargo install mdbook
 
 # Nerd Fonts installation
 mkdir -pv ${HOME}/.fonts/nerd-fonts
