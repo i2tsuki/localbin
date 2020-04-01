@@ -67,7 +67,9 @@ ${PIP} install --user flake8
 ${PIP} install --user black
 ${PIP} install --user awscli
 ${PIP} install --user ec2instanceconnectcli-latest.tar.gz
+${PIP} install --user jsbeautifier
 ${PIP} install --user mypy
+${PIP} install --user google-music-scripts
 # ${PIP} install --user pyfits astropy ipython sympy git+https://github.com/rcbrgs/tuna
 
 which sk || cargo install skim
