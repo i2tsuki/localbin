@@ -21,6 +21,8 @@ iptables -A INPUT -p icmp --icmp-type echo-reply -j ACCEPT
 iptables -A INPUT -p icmp --icmp-type echo-request -j ACCEPT
 iptables -A INPUT -p udp --sport 53 -j ACCEPT
 iptables -A INPUT -p udp --sport 123 -j ACCEPT
+iptables -A INPUT -p tcp --dport 8000 -j ACCEPT
+iptables -A INPUT -p tcp --dport 9000 -j ACCEPT
 iptables -A INPUT -p udp --sport 32768: -j ACCEPT
 # TURN Protocol
 iptables -A INPUT -p udp --sport 3478 -j ACCEPT
