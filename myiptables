@@ -92,6 +92,7 @@ iptables -A OUTPUT -p udp --sport 64000:64100 --dport 33434:33535 -j ACCEPT
 # LOCAL
 iptables -A OUTPUT -d 10.2.0.0/16 -j ACCEPT
 iptables -A OUTPUT -d 10.3.0.0/16 -j ACCEPT
+iptables -A OUTPUT -d 192.168.1.0/24 -j ACCEPT
 
 # LOG
 # iptables -A OUTPUT -j LOG --log-prefix "DROP packets" --log-level debug
