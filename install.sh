@@ -14,6 +14,11 @@ do
     rm -fv $i
 done
 
+# gh
+curl -LO https://github.com/cli/cli/releases/download/v2.5.1/gh_2.5.1_linux_amd64.tar.gz
+tar xf ./gh_2.5.1_linux_amd64.tar.gz
+install ./gh_2.5.1_linux_amd64/bin/gh ${HOME}/.local/bin/gh
+
 # flamegraph
 /usr/bin/curl -LO https://raw.githubusercontent.com/brendangregg/FlameGraph/master/flamegraph.pl
 chmod -v +x ./flamegraph.pl
