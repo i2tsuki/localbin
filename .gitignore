@@ -1,9 +1,9 @@
 # -*- mode: gitignore; -*-
 *~
 \#*\#
+*.tar.gz
 
 .mypy_cache/
-
 secrets/
 
 flamegraph.pl
