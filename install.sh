@@ -52,9 +52,9 @@ cd ${OLDPWD}
 
 which go
 if [ $? = "0" ] ; then
-    go get -u github.com/tcnksm/ghr
-    go get -u github.com/FiloSottile/mkcert
-    go get -u github.com/direnv/direnv
+    go install github.com/tcnksm/ghr@latest
+    go install github.com/FiloSottile/mkcert@latest
+    go install github.com/direnv/direnv@latest
 fi
 
 if (which pip3) ; then
