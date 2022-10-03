@@ -63,18 +63,13 @@ else
     exit 1
 fi
 
-${PIP} install --user gcalcli
 ${PIP} install --user numpy
 ${PIP} install --user git+https://github.com/evertrol/mpyfit.git#egg=mpyfit
 ${PIP} install --user docker-compose
 ${PIP} install --user flake8
 ${PIP} install --user black
-${PIP} install --user awscli
-${PIP} install --user ec2instanceconnectcli-latest.tar.gz
 ${PIP} install --user jsbeautifier
 ${PIP} install --user mypy
-${PIP} install --user google-music-scripts
-# ${PIP} install --user pyfits astropy ipython sympy git+https://github.com/rcbrgs/tuna
 
 which sk || cargo install skim
 which mdbook || cargo install mdbook
