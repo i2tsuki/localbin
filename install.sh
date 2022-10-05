@@ -57,11 +57,7 @@ if [ $? = "0" ] ; then
     go install github.com/direnv/direnv@latest
 fi
 
-if (which pip3) ; then
-    PIP="pip3 -q"
-else
-    exit 1
-fi
+PIP="pip3 -q"
 
 ${PIP} install --user numpy
 ${PIP} install --user git+https://github.com/evertrol/mpyfit.git#egg=mpyfit
