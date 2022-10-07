@@ -1,0 +1,6 @@
+#!/bin/bash
+
+set -eu
+
+git config --local user.name  "i2tsuki"
+git config --local user.email "mac-daisuki@live.jp"
