@@ -1,4 +1,5 @@
 #!/bin/sh
+
 set -eu
 
 cd "$(dirname $(readlink -f $0))"
@@ -23,13 +24,13 @@ install ./gh_2.5.1_linux_amd64/bin/gh ${HOME}/.local/bin/gh
 /usr/bin/curl -LO https://raw.githubusercontent.com/brendangregg/FlameGraph/master/flamegraph.pl
 chmod -v +x ./flamegraph.pl
 
-# Install scripts as a symlink
+# Install scripts as symlinks
 for i in $(find . -maxdepth 1 -mindepth 1 -type f | egrep -v ${EXCLUDE})
 do
     ln -sfv $(readlink -f $i) ${HOME}/.local/bin
 done
 
-# Install scripts in secrets as a symlink
+# Install scripts under `secrets/`` as symlinks
 for i in $(find ./secrets -maxdepth 1 -mindepth 1 -type f | egrep -v ${EXCLUDE})
 do
     ln -sfv $(readlink -f $i) ${HOME}/.local/bin
