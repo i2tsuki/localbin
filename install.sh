@@ -56,6 +56,7 @@ if [ $? = "0" ] ; then
     go install github.com/tcnksm/ghr@latest
     go install github.com/FiloSottile/mkcert@latest
     go install github.com/direnv/direnv@latest
+    go install github.com/gofireflyio/aiac@latest
 fi
 
 PIP="pip3 -q"
